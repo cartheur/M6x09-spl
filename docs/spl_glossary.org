@@ -1,0 +1,189 @@
+#+Title: SPL Glossary
+#+Language: en
+
+* A and B registers
+
+implemented based on "Updating the Forth Virtual Machine" by Stephen
+Pelc, MicroProcessor Engineering
+http://www.complang.tuwien.ac.at/anton/euroforth/ef08/papers/pelc.pdf
+
+The A and B registers provide the source and destination address
+pointers used for block and string operations as well as providing
+scratch storage.
+
+** >A  \ x --
+Writes to the A register.
+
+** >B  \ x --
+Writes to the B register.
+
+** A>  \ -- x
+Reads the A register.
+
+** B>  \ -- x
+Reads the B register.
+
+** A@  \ -- x
+Read the memory pointed to by the A register.
+
+** A!  \ x --
+Write the memory pointed to by the A register
+
+** B@  \ -- x
+Read the memory pointed to by the B register.
+
+** B!  \ x --
+Write the memory pointed to by the B register
+
+** A@+  \ -- x
+Read memory pointed to by A, increment A by one cell. A
+post-incremented read.
+
+** B@+  \ -- x
+Read memory pointed to by B, increment B by one cell. A
+post-incremented read.
+
+** A@-  \ -- x
+Read memory pointed to by A, decrement A by one cell. A
+post-decremented read.
+
+** B@-  \ -- x
+Read memory pointed to by B, decrement B by one cell. A
+post-decremented read.
+
+** A!+  \ x --
+Write to the memory pointed to by A, and update A.
+
+** B!+  \ x --
+Write to the memory pointed to by B, and update B.
+
+* X and Y registers.
+
+The X and Y registers provide indexed addressing. In Forth they can be
+used to implement the USER area and local frame pointers.
+
+** >X  \ x --
+Writes to the X register.
+
+** >Y  \ x --
+Writes to the Y register.
+
+** X>  \ -- x
+Reads the X register.
+
+** Y>  \ -- x
+Reads the Y register.
+
+** nX@  \ n -- x (currently not implemented in SPL)
+Read the memory pointed to by the X register plus n (literal) address
+units.
+
+** nX!  \ x -- (currently not implemented in SPL)
+Write the memory pointed to by the X register plus n (literal) address
+units.
+
+** nY@  \ -- x (currently not implemented in SPL)
+Read the memory pointed to by the Y register plus n (literal) address
+units.
+
+** nY!  \ x -- (currently not implemented in SPL)
+Write the memory pointed to by the Y register plus n (literal) address
+units
+
+* 6502 subroutine calls
+** areg  \ 8b --
+store the low 8bit from top of stack into ea (6502 A-Reg for "call"
+subroutine call)
+** call \ addr --
+jump to subroutine at addr
+* bit manipulation
+** and  \ a b -- n
+bitwise AND of the two topmost stack items
+** or   \ a b -- n
+bitwise OR of the two topmost stack items
+** xor  \ a b -- n
+bitwise XOR (exclusive OR) of the two topmost stack items
+** bclr \ n b -- n'
+clear bit b of n
+** bset  \ n b -- n' 
+set bit b of n
+** btest  \ n b -- 0|1 
+test if bit b of n is set (ie, return the bit value)
+** ~ (comp) \ n - n'
+comp  -  flip the bits of the TOS
+** ctoggle \  n addr -- 
+toggle bits in byte at given address
+* Boolean logic
+
+* Arithmetics
+** abs  \ n -- n'
+return the absolute value of the top of stack (TOS)
+** dabs \ d -- d'
+return the absolute value of a 32bit value on TOS
+** + (add)  \ a b -- a+b
+add the top of stack with next of stack
+
+** d+ (dadd) \ d1 d2 -- d1+d2
+add two 32bit values on top of stack
+** +! (addstore) \ addr b --
+add b to the value pointed to be addr
+
+** ++ (incaddr)  \ addr --
+increment 16bit word at addr by 1
+** c++ (inccaddr) \ addr --
+increment 8bit value at addr by 1
+** d/  \ d0 d1 -- d0/d1
+double precision division
+
+
+* Strings
+** 0trim \ addr len --
+trim leading zeroes from string at addr and make it an counted string
+in PAD
+
+** accept  \ addr -- len (Apple II specific)
+get a line of text in the input buffer
+
+**  &. (ampdot)  \ addr d --
+convert 32bit number d into ASCII at addr addr must be at least 10
+bytes
+** tooutbuf \ n -- 
+   converts text representation of n into outbuf
+** count  \ c-addr1 -- caddr2 u 
+return the character string specification for the counted string
+stored in c-addr1. c-addr2 is the address of the first character after
+c-addr1. u is the content of the character at caddr1, which is the
+length in character of the string in c-addr2.
+
+* Memory
+** @ (fetch)  \ addr -- n
+fetch 16bit value at addr onto top of stack
+** d@ (double-fetch) \ addr -- d
+fetch a 32bit value at addr onto top of stack
+** c@ (char-fetch) \ addr -- c
+fetch a 8bit value at addr onto the top of stack
+** cmove  \   a b n --
+move n bytes from a to b
+** cmove> \ a b n --
+move a range of bytes backwards, n bytes from a to b
+* Input/Output
+** at  \ y x -- 
+position cursor at location x and y
+** ch  \ n -- (Atari specific)
+set horizontal cursor position
+** cv  \ n --  (Atari specific)
+set vertical cursor position
+**  cls \ --  (Atari specific)
+clear screen and set cursor to home position
+** cr \ --  (Atari specific)
+move to the next text line (send carriage return $9B)
+
+* Environment
+** bye  \ -- (Atari specific)
+jump through DOS vector at $A to enter DOS
+** crson \ -- (Atari specific)
+switch cursor on
+** crsoff \-- (Atari specific)
+switch cursor off
+** date \ -- dd mm yy (not implemented)
+return the current date from DOS
