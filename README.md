@@ -3,7 +3,7 @@ A simple programming language for 6x09 based machines with Forth-like syntax.
 
 M6x09-spl is a Forth-style concatenative stack language. The compiler is (currently) written in Python and emits 6809/6309 assembly code. 
 
-Originally created by Ron Kneusel for the Apple II original [source](https://home.comcast.net/~oneelkruns/), adapted for the Atari 8bit and enhanced by Carsten Strotmann (cas@strotmann.de). This 6809/6309 port is based upon the Carsten Strotmann version, found [here](https://github.com/cstrotm/spl-6502).
+Originally created by Ron Kneusel for the Apple II original, adapted for the Atari 8-bit and enhanced by Carsten Strotmann. This 6809/6309 port is based upon this buggy [repo](https://github.com/cartheur/M6x09-spl-6502).
 
 TODO: Retarget to the HD6309 CPU because of its more rich instruction set and support for 32-bit registers. 
 
